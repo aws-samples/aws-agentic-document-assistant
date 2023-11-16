@@ -15,7 +15,7 @@ It is also able to answer complex multi-step questions by combining different to
 
 The following architecture diagrams depicts the design of the solution.
 
-![Architecture of the agentic AI documents assistant on AWS ](agentic-documents-assistant-on-aws.png)
+![Architecture of the agentic AI documents assistant on AWS ](assets/agentic-documents-assistant-on-aws.png)
 
 ## Getting Started
 
@@ -52,19 +52,21 @@ To remove the resources of the solution:
 1. Remove the backend stack by running `npx cdk destroy`.
 2. Remove the SageMaker Studio Domain if you no longer need it.
 
-## Authors and acknowledgment
-
-Authors:
+## Authors
 
 * Mohamed Ali Jamaoui (@jamaouim) - Solution designer/Core maintainer.
-* Giuseppe Hannen (@giusgera) - Extensive work and contribution to the structured metadata extraction module.
-* Laurens ten Cate (@laurcate)
+* Giuseppe Hannen (@giusgera) - Extensive contribution to the structured metadata extraction module.
+* Laurens ten Cate (@laurcate) - Contributed to extending the agent with SQL tool and early streamlit UI deployments.
 
-Acknowledgements:
+## Security
 
-* Irina Radu (@idr) for coordinating the communication accross teams when building the first PoC of the solution.
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## References
 
 * [Best practices for working with AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html).
 * [Langchain custom LLM agents](https://python.langchain.com/docs/modules/agents/how_to/custom_llm_agent)
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.
