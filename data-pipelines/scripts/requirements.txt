@@ -1,0 +1,13 @@
+# The specified boto versions recognize Amazon Bedrock service after general availability.
+boto3>=1.28.57
+botocore>=1.31.57
+pandas==2.0.3
+dask==2023.5.0
+psycopg2-binary
+SQLAlchemy
+tabulate
+dask
+pgvector
+langchain
+# tiktoken is required by langchain.text_splitter.TokenTextSplitter
+tiktoken
