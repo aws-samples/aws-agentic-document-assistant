@@ -54,9 +54,11 @@ To remove the resources of the solution:
 
 ## Authors
 
-* Mohamed Ali Jamaoui (@jamaouim) - Solution designer/Core maintainer.
-* Giuseppe Hannen (@giusgera) - Extensive contribution to the structured metadata extraction module.
-* Laurens ten Cate (@laurcate) - Contributed to extending the agent with SQL tool and early streamlit UI deployments.
+The authors of this asset are:
+
+* Mohamed Ali Jamaoui: Solution designer/Core maintainer.
+* Giuseppe Hannen: Extensive contribution to the structured metadata extraction module.
+* Laurens ten Cate: Contributed to extending the agent with SQL tool and early streamlit UI deployments.
 
 ## Security
 
