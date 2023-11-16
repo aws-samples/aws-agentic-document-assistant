@@ -23,10 +23,10 @@ Follow the insturctions below to setup the solution on your account.
 
 ### Prerequisites
 
-- An AWS account
-- Setup CDK:
+- An AWS account.
+- CDK setup:
     - We recommend using a [Cloud9 environment](https://docs.aws.amazon.com/cloud9/latest/user-guide/tutorial-create-environment.html) to install the cdk app.
-    - Alternatively, you can install CDK in an other environment with the [documentation instructions](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites).
+    - Alternatively, you can install CDK in an other environment, including locally, by following the [documentation instructions](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites).
 
 ### Installation
 
@@ -43,7 +43,7 @@ To install the solution in your AWS account:
     2. Then, inside the `frontend/streamlit-ui` folder, run `bash run-streamlit-ui.sh`.
     3. Click on the link with the format below to open the demo:
     ```https://{domain_id}.studio.{region}.sagemaker.aws/jupyter/default/proxy/{port_number}/```
-4. run the SageMaker Pipeline, defined in the `data-pipelines/run-data-pipelines.ipynb` notebook, to process the input pdf documents and prepare the SQL table and the semantic search index used by the LLM assistant.
+4. run the SageMaker Pipeline notebooks under the `data-pipelines` folder, to process the input pdf documents, prepare the SQL table, and create the semantic search index used by the LLM assistant.
 
 ### Clean up
 
