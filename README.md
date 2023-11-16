@@ -24,7 +24,8 @@ Follow the insturctions below to setup the solution on your account.
 ### Prerequisites
 
 - An AWS account.
-- CDK setup:
+- [Configure model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html#add-model-access) to Anthroptic Claude and Amazon Titan models in one of [the supported regions of Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html#bedrock-regions).
+- setup [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/):
     - We recommend using a [Cloud9 environment](https://docs.aws.amazon.com/cloud9/latest/user-guide/tutorial-create-environment.html) to install the cdk app.
     - Alternatively, you can install CDK in an other environment, including locally, by following the [documentation instructions](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites).
 
