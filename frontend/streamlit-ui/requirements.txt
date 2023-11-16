@@ -1,0 +1,5 @@
+boto3
+langchain
+streamlit
+streamlit-chat
+tabulate
