@@ -72,8 +72,9 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 
 ## Future improvements
 
-[] Release the amplify-ui.
-[] Improve the overall-inference speed.
+- [ ] Release the amplify-ui.
+- [ ] Improve the overall-inference speed.
+- [ ] Refactor the `data-pipelines` into a custom [SageMaker MLOps template](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-projects-templates.html).
 
 ## License
 
