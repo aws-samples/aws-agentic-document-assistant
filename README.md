@@ -39,10 +39,12 @@ To install the solution in your AWS account:
     2. Run `npm install` to install the dependencies.
     3. If you have never used CDK in the current account and region, run [bootstrapping](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) with `npx cdk bootstrap`.
     4. Run `npx cdk deploy` to deploy the stack.
+    5. Copy the IAM Policy ARN in the CDK stack output.
 3. To install the streamlit-ui:
     1. We recommend cloning this repository into a [SageMaker Studio Environment](https://docs.aws.amazon.com/sagemaker/latest/dg/onboard-quick-start.html).
-    2. Then, inside the `frontend/streamlit-ui` folder, run `bash run-streamlit-ui.sh`.
-    3. Click on the link with the format below to open the demo:
+    2. Attach the IAM Policy ARN copied above to the SageMaker Execution Role of your SageMaker Studio domain.
+    3. Then, inside the `frontend/streamlit-ui` folder, run `bash run-streamlit-ui.sh`.
+    4. Click on the link with the format below to open the demo:
     ```https://{domain_id}.studio.{region}.sagemaker.aws/jupyter/default/proxy/{port_number}/```
 4. run the SageMaker Pipeline notebooks under the `data-pipelines` folder, to process the input pdf documents, prepare the SQL table, and create the semantic search index used by the LLM assistant.
 
