@@ -70,6 +70,11 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 * [Best practices for working with AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html).
 * [Langchain custom LLM agents](https://python.langchain.com/docs/modules/agents/how_to/custom_llm_agent)
 
+## Future improvements
+
+[] Release the amplify-ui.
+[] Improve the overall-inference speed.
+
 ## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
