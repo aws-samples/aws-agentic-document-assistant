@@ -1,5 +1,8 @@
+We define the following SageMaker Processing Jobs:
 
-We use SageMaker Processing Jobs and SageMaker Pipelines to implement the data pipelines of the solution, which includes:
+- `01-validate-sagemaker-jobs-connection-to-postgreSQL`: Defines a SageMaker Processing Job that determines whether you can connect to your PostgreSQL database from within a SageMaker Processing Job. This is a test that you can run before moving on to the next jobs.
+- `02-create-and-load-embeddings-into-aurora-postgreSQL`: Defines a SageMaker Processing Job which when provided with the extracted text from your PDF documents as an input, embeds this text using Bedrock and creates a vector store in the PostgreSQL database that can then be used as a tool by the AI agent which is hosted in AWS Lambda and which can be accessed through Streamlit. By default the script uses the processed documents in the `documents_processed.json` file at the root level of the S3 bucket which is created when you deploy the solution. You can use the script `notebooks/03-pdf-document-processing.ipynb` to create this `documents_processed.json` using our example PDF documents. The crucial difference between the processed data and the raw data is that the processed data is in a textual format, which can be read by LLMs.
+- `03-load-sql-tables-into-aurora-postgreSQL`: Defines a SageMaker Processing Job which when provided with structured metadata containing the extracted entities, loads this metadata into the PostgreSQL database such that it can be used by the AI agent to answer questions involving the metadata.
 
-* A SageMaker Processing job for orchestrating using Amazon Textract to extract data including tables from PDF documents.
-* A SageMaker Processing job for Generating the semantic search index from input documents.
+We also define a SageMaker Pipeline (in the file `04-sagemaker-pipeline-for-documents-processing`) which contains the SageMaker Processing Jobs from `02-create-and-load-embeddings-into-aurora-postgreSQL` and `03-load-sql-tables-into-aurora-postgreSQL` as steps which essentially allows you to update your agent with the latest data from S3 in a single click.
+
