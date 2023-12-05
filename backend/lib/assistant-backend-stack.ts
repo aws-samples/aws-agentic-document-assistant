@@ -25,10 +25,13 @@ export class AssistantBackendStack extends cdk.Stack {
 
     // -----------------------------------------------------------------------
     // Create relevant SSM parameters
-    const parameters = this.node.tryGetContext("parameters");
-
-    const BEDROCK_REGION = parameters["bedrock_region"] || "eu-central-1";
-    const LLM_MODEL_ID = parameters["llm_model_id"] || "anthropic.claude-v2";
+    const parameters = this.node.tryGetContext("parameters") || {
+        "bedrock_region": "eu-central-1",
+        "llm_model_id": "anthropic.claude-v2"
+      };
+  
+    const BEDROCK_REGION = parameters["bedrock_region"];
+    const LLM_MODEL_ID = parameters["llm_model_id"];
 
     // Note: the SSM parameters for Bedrock region and endpoint are used
     // to setup a boto3 bedrock client for programmatic access to Bedrock APIs.
