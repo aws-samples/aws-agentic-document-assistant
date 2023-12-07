@@ -1,15 +1,14 @@
 # Agentic Documents Assistant
 
-The Agentic Documents Assistant is an LLM assistant that provides users with easy access to information and insights stored accross their business documents, through natural conversations and question answering.
-It supports answering factual questions by retrieving information directly from documents using semantic search with the popular RAG design pattern.
-Additionally, it answers analytical questions by translating user questions into SQL queries and running them against a database of entities extracted from the documents with a batch process.
-It is also able to answer complex multi-step questions by combining different tools and data sources using an LLM agent design pattern.
+The Agentic Documents Assistant is an LLM assistant that provides users with easy access to information and insights stored accross their business documents through natural conversations and question answering. It supports answering factual questions by retrieving information directly from documents using semantic search with the popular RAG design pattern. Additionally, it answers analytical questions by translating user questions into SQL queries and running them against a database of entities extracted from the documents with a batch process. It is also able to answer complex multi-step questions by combining different tools and data sources using an LLM agent design pattern.
+
+To learn more about the design and architecture of this solution, check the AWS ML blog post: [Boosting RAG-based intelligent document assistants using entity extraction, SQL querying, and agents with Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/boosting-rag-based-intelligent-document-assistants-using-entity-extraction-sql-querying-and-agents-with-amazon-bedrock/).
 
 ## Key Features
 
 - Semantic search to augment response generation with relevant documents
-- Structured metadata extraction and SQL queries for analytical reasoning
-- An agent built with the Reason and Act (ReAct) instruction format that determines whether to use search or SQL to answer questions.
+- Structured metadata & entities extraction and SQL queries for analytical reasoning
+- An agent built with the Reason and Act (ReAct) instruction format that determines whether to use search or SQL to answer a given question.
 
 ## Architecture Overview
 
