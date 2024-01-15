@@ -25,8 +25,8 @@ Follow the insturctions below to setup the solution on your account.
 - An AWS account.
 - [Configure model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html#add-model-access) to Anthroptic Claude and Amazon Titan models in one of [the supported regions of Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html#bedrock-regions).
 - setup [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/):
-    - We recommend using a [Cloud9 environment](https://docs.aws.amazon.com/cloud9/latest/user-guide/tutorial-create-environment.html) to install the cdk app.
-    - Alternatively, you can install CDK in an other environment, including locally, by following the [documentation instructions](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites).
+    - We recommend using a [Cloud9 environment](https://docs.aws.amazon.com/cloud9/latest/user-guide/tutorial-create-environment.html) or [CloudShell](https://aws.amazon.com/cloudshell/) to install the cdk app.
+    - Alternatively, you can setup CDK in your local environment by following the [documentation instructions](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites).
 
 ### Installation
 
@@ -38,21 +38,21 @@ To install the solution in your AWS account:
     2. Run `npm install` to install the dependencies.
     3. If you have never used CDK in the current account and region, run [bootstrapping](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) with `npx cdk bootstrap`.
     4. Run `npx cdk deploy` to deploy the stack.
-    5. Copy the IAM Policy ARN in the CDK stack output.
-3. To install the streamlit-ui:
-    1. We recommend cloning this repository into a [SageMaker Studio Environment](https://docs.aws.amazon.com/sagemaker/latest/dg/onboard-quick-start.html).
-    2. Attach the IAM Policy ARN copied above to the SageMaker Execution Role of your SageMaker Studio domain.
-    3. Then, inside the `frontend/streamlit-ui` folder, run `bash run-streamlit-ui.sh`.
-    4. Click on the link with the format below to open the demo:
-    ```https://{domain_id}.studio.{region}.sagemaker.aws/jupyter/default/proxy/{port_number}/```
-4. run the SageMaker Pipeline notebooks under the `data-pipelines` folder, to process the input pdf documents, prepare the SQL table, and create the semantic search index used by the LLM assistant.
+    5. Take note of the SageMaker IAM Policy ARN found in the CDK stack output.
+3. Deploy the Next.js frontend on AWS Amplify:
+    1. Go inside the `fontend` folder.
+    2. Run `npm install` to install the dependencies.
+    3. Run `npx cdk deploy` to deploy a stack that builds an Amplify CI/CD
+    4. Once the CI/CD is ready go to the Amplify console and trigger a build.
+    5. Once the app is built, click the hosting link to view. You can now create a new account and interact with agentic assistant.
+4. To update the underlying data, run the SageMaker Pipeline notebooks under the `data-pipelines` folder. This processes the input pdf documents, prepares the SQL table, and creates the semantic search index used by the LLM assistant.
 
 ### Clean up
 
 To remove the resources of the solution:
 
-1. Remove the backend stack by running `npx cdk destroy`.
-2. Remove the SageMaker Studio Domain if you no longer need it.
+1. Remove the backend stack by running `npx cdk destroy` inside the `backend` folder.
+2. Remove the frontend stack by running `npx cdk destroy` inside the `backend` folder.
 
 ## Authors
 
@@ -70,12 +70,11 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 
 * [Best practices for working with AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html).
 * [Langchain custom LLM agents](https://python.langchain.com/docs/modules/agents/how_to/custom_llm_agent)
+* [LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/)
 
 ## Future improvements
 
-- [ ] Release the amplify-ui.
 - [ ] Improve the overall-inference speed.
-- [ ] Refactor the `data-pipelines` into a custom [SageMaker MLOps template](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-projects-templates.html).
 
 ## License
 
