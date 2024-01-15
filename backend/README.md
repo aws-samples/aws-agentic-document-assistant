@@ -7,10 +7,10 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## What gets built
 
-- [x] An AWS Lambda container with Amazon Bedrock access setup.
-- [x] An AWS Lambda function to serve as the orchestrator (i.e agent executor).
+- [x] An AWS Lambda container, with Amazon Bedrock client, to serve as the orchestrator (i.e agent executor).
 - [x] An Amazon DynamoDB table to store the ongoing chat history.
-- [x] An Amazon API Gateway to connect the serverless backend to clients.
+- [x] A REST API with Amazon API Gateway to connect the serverless backend to clients.
+- [x] An AWS Cognito user pool to authenticate users to the REST API and the frontend app.
 - [x] AWS SSM parameters for all the solution configurations.
 - [x] [Least-privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege) IAM permissions.
 - [x] A VPC with public, private and isolated subnets to ensure the security and efficiency of the solution.
