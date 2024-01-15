@@ -2,7 +2,7 @@
 
 The **Agentic Documents Assistant** is an LLM assistant that allows users to answer complex questions from their business documents through natural conversations.
 It supports answering factual questions by retrieving information directly from documents using semantic search with the popular RAG design pattern.
-Additionally, it answers analytical questions `` by translating user questions into SQL queries and running them against a database of entities extracted from the documents using a batch process.
+Additionally, it answers analytical questions such `which contracts will expire in the next 3 months?` by translating user questions into SQL queries and running them against a database of entities extracted from the documents using a batch process.
 It is also able to answer complex multi-step questions by combining retrieval, analytical, and other tools and data sources using an LLM agent design pattern.
 
 To learn more about the design and architecture of this solution, check the AWS ML blog post: [Boosting RAG-based intelligent document assistants using entity extraction, SQL querying, and agents with Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/boosting-rag-based-intelligent-document-assistants-using-entity-extraction-sql-querying-and-agents-with-amazon-bedrock/).
