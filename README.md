@@ -1,6 +1,9 @@
 # Agentic Documents Assistant
 
-The Agentic Documents Assistant is an LLM assistant that provides users with easy access to information and insights stored accross their business documents through natural conversations and question answering. It supports answering factual questions by retrieving information directly from documents using semantic search with the popular RAG design pattern. Additionally, it answers analytical questions by translating user questions into SQL queries and running them against a database of entities extracted from the documents with a batch process. It is also able to answer complex multi-step questions by combining different tools and data sources using an LLM agent design pattern.
+The **Agentic Documents Assistant** is an LLM assistant that allows users to answer complex questions from their business documents through natural conversations.
+It supports answering factual questions by retrieving information directly from documents using semantic search with the popular RAG design pattern.
+Additionally, it answers analytical questions `` by translating user questions into SQL queries and running them against a database of entities extracted from the documents using a batch process.
+It is also able to answer complex multi-step questions by combining retrieval, analytical, and other tools and data sources using an LLM agent design pattern.
 
 To learn more about the design and architecture of this solution, check the AWS ML blog post: [Boosting RAG-based intelligent document assistants using entity extraction, SQL querying, and agents with Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/boosting-rag-based-intelligent-document-assistants-using-entity-extraction-sql-querying-and-agents-with-amazon-bedrock/).
 
@@ -51,8 +54,8 @@ To install the solution in your AWS account:
 
 To remove the resources of the solution:
 
-1. Remove the backend stack by running `npx cdk destroy` inside the `backend` folder.
-2. Remove the frontend stack by running `npx cdk destroy` inside the `backend` folder.
+1. Remove the stack inside the `backend` folder by running `npx cdk destroy`.
+2. Remove the stack inside the `frontend` folder by running `npx cdk destroy`.
 
 ## Authors
 
