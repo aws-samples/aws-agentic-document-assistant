@@ -9,14 +9,15 @@ from .tools import LLM_AGENT_TOOLS
 
 _CALUDE_PROMPT_TEMPLATE = """\n\nHuman: The following is a friendly conversation between a human and an AI assistant.
 The assistant is polite, helpful, and accurately replies to input messages or questions with specific details from its context.
-If the assistant does not know the answer to a question, it truthfully says it does not know.
 
-The previous conversation is within the <chat_history></chat_history> XML tags below, where Hu refers to the human and AI refers to the assistant:
-<chat_history>
+When relevant refer to the previous conversation available within the <history></history> XML tags below,
+where Hu refers to the human and AI refers to the assistant:
+
+<history>
 {history}
-</chat_history>
+</history>
 
-Input: {input}
+The current user input is the following: {input}
 
 Assistant:"""
 
