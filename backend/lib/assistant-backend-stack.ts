@@ -1,6 +1,5 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-// import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as iam from "aws-cdk-lib/aws-iam";
@@ -9,6 +8,8 @@ import * as path from "path";
 import * as rds from "aws-cdk-lib/aws-rds";
 import * as ssm from "aws-cdk-lib/aws-ssm";
 import * as s3 from "aws-cdk-lib/aws-s3";
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
 
 import { Vpc } from "./vpc-stack";
 
@@ -180,7 +181,6 @@ export class AssistantBackendStack extends cdk.Stack {
 
     // -----------------------------------------------------------------------
     // Add AWS Lambda container and function to serve as the agent executor.
-
     const agent_executor_lambda = new lambda.DockerImageFunction(
       this,
       "LambdaAgentContainer",
@@ -238,6 +238,7 @@ export class AssistantBackendStack extends cdk.Stack {
         stringValue: agent_executor_lambda.functionName,
       }
     );
+
     //------------------------------------------------------------------------
     // Create an S3 bucket to store the vector embeddings and SQL data
     // and allow SageMaker to read and write to it.
@@ -310,35 +311,122 @@ export class AssistantBackendStack extends cdk.Stack {
         ],
       }
     );
+
     // -----------------------------------------------------------------------
-    // Add API gateway to expose lambda (Postponed to next release)
-    // const agent_api = new apigateway.RestApi(this, "AssistantApi", {
-    //   restApiName: "assistant-api",
-    //   description:
-    //     "An API to invoke an LLM based agent which orchestrates using tools to answer user input questions.",
-    // });
+    // Create a new Cognito user pool
+    // documentation: https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cognito.UserPool.html
+    const cognito_user_pool = new cognito.UserPool(this, "CognitoPool", {
+      autoVerify: { email: true },
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      selfSignUpEnabled: true,
+      signInCaseSensitive: false,
+      signInAliases: {
+        email: true,
+        username: true
+      },
+      standardAttributes: {
+        email: {
+          required: true,
+          mutable: false
+        }
+      }
+    });
 
-    // agent_api.root.addMethod(
-    //   "POST",
-    //   new apigateway.LambdaIntegration(agent_executor_lambda),
-    //   { apiKeyRequired: true }
-    // );
+    // Add an app client to the user pool
+    const pool_client = cognito_user_pool.addClient(
+      "NextJsAppClient",
+      {
+        oAuth: {
+          flows: {
+            authorizationCodeGrant: true,
+          },
+          scopes: [cognito.OAuthScope.OPENID],
+          callbackUrls: ["https://localhost:3000/"],
+          logoutUrls: ["https://localhost:3000/"],
+        },
+      },
+    );
 
-    // // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway-readme.html
-    // const usage_plan = agent_api.addUsagePlan("AgentApiUsagePlan", {
-    //   name: "Agent API Usage Plan",
-    //   throttle: {
-    //     rateLimit: 100,
-    //     burstLimit: 50,
-    //   },
-    // });
+    // -------------------------------------------------------------------------
+    // Add an Amazon API Gateway with AWS cognito auth and an AWS lambda as a backend
 
-    // const api_key = agent_api.addApiKey("AgentApiKey", {
-    //   apiKeyName: "agent-backed-key",
-    //   // TODO: replace with proper authentication later.
-    //   value: "BasicAPIKeyForTesting2023",
-    // });
-    // usage_plan.addApiKey(api_key);
+    const agent_api = new apigateway.RestApi(this, "AssistantApi", {
+      restApiName: "assistant-api",
+      description:
+        "An API to invoke an LLM based agent which orchestrates using tools to answer user input questions.",
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS, // Change this to the specific origin of your app in production
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: ['Content-Type', 'Authorization']
+      }
+    });
+
+    // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.CognitoUserPoolsAuthorizer.html
+    const cognito_authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'ChatAuthorizer', {
+      cognitoUserPools: [cognito_user_pool]
+    });
+
+    const agent_lambda_integration = new apigateway.LambdaIntegration(agent_executor_lambda, {
+      proxy: false, // Set this to false to integrate with Lambda function directly
+      integrationResponses: [{
+        statusCode: '200',
+        // Enable CORS for the Lambda Integration
+        responseParameters: {
+          'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+          'method.response.header.Access-Control-Allow-Origin': "'*'",
+          'method.response.header.Access-Control-Allow-Methods': "'POST,OPTIONS'",
+        },
+      }]
+    });
+
+    agent_api.root.addMethod(
+      "POST",
+      agent_lambda_integration,
+      {
+        // Enable CORS for the API
+        methodResponses: [{
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': true,
+            'method.response.header.Access-Control-Allow-Origin': true,
+            'method.response.header.Access-Control-Allow-Methods': true,
+          },
+        }],
+        authorizer: cognito_authorizer,
+        authorizationType: apigateway.AuthorizationType.COGNITO
+      }
+    );
+
+    // -----------------------------------------------------------------------
+    // Add an SSM parameter to hold the cognito user pool id
+    const cognito_user_pool_id_parameter = new ssm.StringParameter(
+      this,
+      "cognitoUserPoolParameter",
+      {
+        parameterName: "/AgenticLLMAssistant/cognito_user_pool_id",
+        stringValue: cognito_user_pool.userPoolId,
+      }
+    );
+
+    // Add an SSM parameter to hold the cognito user pool id
+    const cognito_user_pool_client_id_parameter = new ssm.StringParameter(
+      this,
+      "cognitoUserPoolClientParameter",
+      {
+        parameterName: "/AgenticLLMAssistant/cognito_user_pool_client_id",
+        stringValue: pool_client.userPoolClientId,
+      }
+    );
+
+    // Add an SSM parameter to hold Rest API URL
+    const agent_api_parameter = new ssm.StringParameter(
+      this,
+      "AgentAPIURLParameter",
+      {
+        parameterName: "/AgenticLLMAssistant/agent_api",
+        stringValue: agent_api.url
+      }
+    );
 
     // -----------------------------------------------------------------------
     // stack outputs
@@ -347,6 +435,22 @@ export class AssistantBackendStack extends cdk.Stack {
       value: SageMakerPostgresDBAccessIAMPolicy.managedPolicyArn,
     });
 
-    // new cdk.CfnOutput(this, "RestAPI", { value: agent_api.url });
+    // Output the clientID
+    new cdk.CfnOutput(this, "UserPoolClient", {
+      value: pool_client.userPoolClientId,
+    });
+
+    new cdk.CfnOutput(this, "UserPoolId", {
+      value: cognito_user_pool.userPoolId
+    });
+
+    new cdk.CfnOutput(this, "UserPoolProviderURL", {
+      value: cognito_user_pool.userPoolProviderUrl
+    });
+
+    new cdk.CfnOutput(this, "EndpointURL", {
+      value: agent_api.url
+    });
+
   }
 }
