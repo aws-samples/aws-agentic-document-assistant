@@ -110,12 +110,10 @@ def lambda_handler(event, context):
     else:
         return {
             "statusCode": 200,
-            "body": {
-                "response": (
-                    f"The chatbot_type {chatbot_type} is not supported."
-                    f" Please use one of the following types: {chatbot_types}"
-                )
-            },
+            "response": (
+                f"The chatbot_type {chatbot_type} is not supported."
+                f" Please use one of the following types: {chatbot_types}"
+            )
         }
 
     try:
@@ -128,5 +126,5 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
-        "body": {"response": response},
+        "response": response
     }
