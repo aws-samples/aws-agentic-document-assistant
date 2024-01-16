@@ -8,7 +8,9 @@ It is also able to answer complex multi-step questions by combining retrieval, a
 To learn more about the design and architecture of this solution, check the accompanying AWS ML blog post:
 
 <p align="center">
+
 [Boosting RAG-based intelligent document assistants using entity extraction, SQL querying, and agents with Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/boosting-rag-based-intelligent-document-assistants-using-entity-extraction-sql-querying-and-agents-with-amazon-bedrock/).
+
 <p>
 
 ## Key Features
