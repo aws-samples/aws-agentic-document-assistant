@@ -1,11 +1,15 @@
 # Agentic Documents Assistant
 
-The **Agentic Documents Assistant** is an LLM assistant that allows users to answer complex questions from their business documents through natural conversations.
+The *Agentic Documents Assistant* is an LLM assistant that allows users to answer complex questions from their business documents through natural conversations.
 It supports answering factual questions by retrieving information directly from documents using semantic search with the popular RAG design pattern.
-Additionally, it answers analytical questions such as `which contracts will expire in the next 3 months?` by translating user questions into SQL queries and running them against a database of entities extracted from the documents using a batch process.
+Additionally, it answers analytical questions such as *which contracts will expire in the next 3 months?* by translating user questions into SQL queries and running them against a database of entities extracted from the documents using a batch process.
 It is also able to answer complex multi-step questions by combining retrieval, analytical, and other tools and data sources using an LLM agent design pattern.
 
-To learn more about the design and architecture of this solution, check the AWS ML blog post: [Boosting RAG-based intelligent document assistants using entity extraction, SQL querying, and agents with Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/boosting-rag-based-intelligent-document-assistants-using-entity-extraction-sql-querying-and-agents-with-amazon-bedrock/).
+To learn more about the design and architecture of this solution, check the accompanying AWS ML blog post:
+
+<p align="center">
+[Boosting RAG-based intelligent document assistants using entity extraction, SQL querying, and agents with Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/boosting-rag-based-intelligent-document-assistants-using-entity-extraction-sql-querying-and-agents-with-amazon-bedrock/).
+<p>
 
 ## Key Features
 
@@ -13,23 +17,23 @@ To learn more about the design and architecture of this solution, check the AWS 
 - Structured metadata & entities extraction and SQL queries for analytical reasoning
 - An agent built with the Reason and Act (ReAct) instruction format that determines whether to use search or SQL to answer a given question.
 
-## Content
-
-Below an outline of the main folders included in this asset.
-
-| Folder path | Description |
-| ----------- | ----------- |
-| backend | Includes a Typescript CDK project implementing IaaC to setup the backend infrastructure. |
-| frontend | A Typescript CDK project to setup infrastructure to deploy and host the frontend app with AWS Amplify. |
-| frontend/chat-app | A Next.js app with AWS Cognito Authentication and secured backend connectivity. |
-| data-pipelines | Notebooks implementing SageMaker Jobs and Pipeline to process the data in batch. |
-| experiments | Notebooks and code showcasing different modules of the solution as standalone experiments for research and development. |
-
 ## Architecture Overview
 
 The following architecture diagrams depicts the design of the solution.
 
 ![Architecture of the agentic AI documents assistant on AWS ](assets/agentic-documents-assistant-on-aws.png)
+
+## Content
+
+Below an outline of the main folders included in this asset.
+
+| Folder | Description |
+| ----------- | ----------- |
+| `backend` | Includes a Typescript CDK project implementing IaaC to setup the backend infrastructure. |
+| `frontend` | A Typescript CDK project to setup infrastructure to deploy and host the frontend app with AWS Amplify. |
+| `frontend/chat-app` | A Next.js app with AWS Cognito Authentication and secured backend connectivity. |
+| `data-pipelines` | Notebooks implementing SageMaker Jobs and Pipeline to process the data in batch. |
+| `experiments` | Notebooks and code showcasing different modules of the solution as standalone experiments for research and development. |
 
 ## Getting Started
 
