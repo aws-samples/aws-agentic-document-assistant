@@ -6,12 +6,7 @@ Additionally, it answers analytical questions such as *which contracts will expi
 It is also able to answer complex multi-step questions by combining retrieval, analytical, and other tools and data sources using an LLM agent design pattern.
 
 To learn more about the design and architecture of this solution, check the accompanying AWS ML blog post:
-
-<p align="center">
-
 [Boosting RAG-based intelligent document assistants using entity extraction, SQL querying, and agents with Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/boosting-rag-based-intelligent-document-assistants-using-entity-extraction-sql-querying-and-agents-with-amazon-bedrock/).
-
-<p>
 
 ## Key Features
 
@@ -32,7 +27,7 @@ Below an outline of the main folders included in this asset.
 | Folder | Description |
 | ----------- | ----------- |
 | `backend` | Includes a Typescript CDK project implementing IaaC to setup the backend infrastructure. |
-| `frontend` | A Typescript CDK project to setup infrastructure to deploy and host the frontend app with AWS Amplify. |
+| `frontend` | A Typescript CDK project to setup infrastructure for deploying and hosting the frontend app with AWS Amplify. |
 | `frontend/chat-app` | A Next.js app with AWS Cognito Authentication and secured backend connectivity. |
 | `data-pipelines` | Notebooks implementing SageMaker Jobs and Pipeline to process the data in batch. |
 | `experiments` | Notebooks and code showcasing different modules of the solution as standalone experiments for research and development. |
