@@ -13,6 +13,18 @@ To learn more about the design and architecture of this solution, check the AWS 
 - Structured metadata & entities extraction and SQL queries for analytical reasoning
 - An agent built with the Reason and Act (ReAct) instruction format that determines whether to use search or SQL to answer a given question.
 
+## Content
+
+Below an outline of the main folders included in this asset.
+
+| Folder path | Description |
+| ----------- | ----------- |
+| backend | Includes a Typescript CDK project implementing IaaC to setup the backend infrastructure. |
+| frontend | A Typescript CDK project to setup infrastructure to deploy and host the frontend app with AWS Amplify. |
+| frontend/chat-app | A Next.js app with AWS Cognito Authentication and secured backend connectivity. |
+| data-pipelines | Notebooks implementing SageMaker Jobs and Pipeline to process the data in batch. |
+| experiments | Notebooks and code showcasing different modules of the solution as standalone experiments for research and development. |
+
 ## Architecture Overview
 
 The following architecture diagrams depicts the design of the solution.
