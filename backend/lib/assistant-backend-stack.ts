@@ -27,10 +27,10 @@ export class AssistantBackendStack extends cdk.Stack {
     // -----------------------------------------------------------------------
     // Create relevant SSM parameters
     const parameters = this.node.tryGetContext("parameters") || {
-        "bedrock_region": "eu-central-1",
-        "llm_model_id": "anthropic.claude-v2"
-      };
-  
+      "bedrock_region": "eu-central-1",
+      "llm_model_id": "anthropic.claude-v2"
+    };
+
     const BEDROCK_REGION = parameters["bedrock_region"];
     const LLM_MODEL_ID = parameters["llm_model_id"];
 
@@ -189,7 +189,10 @@ export class AssistantBackendStack extends cdk.Stack {
           path.join(
             __dirname,
             "lambda-functions/agent-executor-lambda-container"
-          )
+          ),
+          {
+            buildArgs: { "--platform": "linux/amd64" }
+          }
         ),
         description: "Lambda function with bedrock access created via CDK",
         timeout: cdk.Duration.minutes(5),

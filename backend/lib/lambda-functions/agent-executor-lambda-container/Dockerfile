@@ -1,5 +1,5 @@
 # stage 1: build the lambda layer
-FROM public.ecr.aws/lambda/python:3.9 AS builder
+FROM --platform=linux/x86_64 public.ecr.aws/lambda/python:3.9 AS builder
 
 # Copy requirements.txt
 COPY requirements.txt /tmp/
@@ -16,7 +16,7 @@ RUN yum install -y zip
 RUN cd /build/python && zip -r /opt/bedrock_layer.zip .
 
 # Stage 2: Build the Lambda function
-FROM public.ecr.aws/lambda/python:3.9
+FROM --platform=linux/x86_64 public.ecr.aws/lambda/python:3.9
 
 # Copy the Lambda layer artifacts from the builder stage
 COPY --from=builder /opt/bedrock_layer.zip /opt/
