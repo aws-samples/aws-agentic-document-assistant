@@ -49,7 +49,15 @@ const ChatApp: React.FC = () => {
           .then(response => response.json())
           .then(responseData => {
             // Add the response to the messages state after receiving it
-            const AIMessage = {"content": responseData.response, "isUser": false}
+            let AIMessage: Message;
+            if (responseData.errorMessage) {
+              AIMessage = {
+                "content": `Error: ${responseData.errorMessage}\n\nDetails: \n\n\`\`\`\n\n${JSON.stringify(responseData, null, 2)}\n\n\`\`\``,
+                "isUser": false
+              };
+            } else {
+              AIMessage = {"content": responseData.response, "isUser": false};
+            }
             setMessages(prevMessages => [...prevMessages, AIMessage]);
 
             // Scroll to the bottom of the message container again after adding the response
@@ -58,7 +66,7 @@ const ChatApp: React.FC = () => {
             }
           })
           .catch(error => {
-            const AIMessage = {
+            let AIMessage: Message = {
               "content": "Error while preparing your answer. Check your connectivity to the backend",
               "isUser": false
             }
