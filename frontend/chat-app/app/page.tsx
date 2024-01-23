@@ -53,7 +53,7 @@ export default function IndexPage() {
             onClick={handleSignOut}
             className="px-4 text-gray-600 hover:text-gray-800 hover:shadow-sm rounded-lg focus:outline-none"
           >
-            Sign Out
+            Sign out
           </button>
         </div>
         </header>
@@ -64,10 +64,10 @@ export default function IndexPage() {
         </main>
         <footer className="bg-white p-4 shadow-sm w-full text-xs">
           <p className="text-center text-gray-600">
-            &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+            &copy; {new Date().getFullYear()} Your Company, all rights reserved.
           </p>
           <p className="text-center text-gray-600 text-xs">
-            AI answers are provided as a reference and should be verified by the user.
+            AI answers should be verified before use.
           </p>
         </footer>
       </div>
