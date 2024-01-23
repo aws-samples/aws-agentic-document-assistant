@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatMessage from './ChatMessage';
 import ClearButton from './ClearButton';
+import DebugToggleSwitch from './DebugToggleSwitch';
+
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import { fetchAuthSession, fetchUserAttributes } from 'aws-amplify/auth';
 
@@ -14,20 +16,21 @@ interface Message {
 const ChatApp: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [clean_history, setCleanHistory] = useState<boolean>(false);
+    const [debugMode, setDebugMode] = useState(false);
     const messageContainerRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+      const storedDebugMode = localStorage.getItem('debugMode');
+      setDebugMode(storedDebugMode === 'true');
+    }, []);
+
     const handleSendMessage = async (message: string) => {
+        const defaultErrorMessage = "Error while preparing your answer. Check your connectivity to the backend.";
         // fetch the cognito authentication tokens to use with the API call.
         const authToken = (await fetchAuthSession()).tokens?.idToken?.toString()
         const userAttributes = (await fetchUserAttributes())
         // Append the user's input message to the message container immediately
-        const userMessage = {"content": message, "isUser": true}
-        setMessages([...messages, userMessage]);
-
-        // Scroll to the bottom of the message container
-        if (messageContainerRef.current) {
-          messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
-        }
+        setMessages(prevMessages => [...prevMessages, { content: message, isUser: true }]);
 
         // Call the API to get the response
         const rest_api_endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || ""
@@ -50,32 +53,20 @@ const ChatApp: React.FC = () => {
           .then(responseData => {
             // Add the response to the messages state after receiving it
             let AIMessage: Message;
-            if (responseData.errorMessage) {
+            if (responseData.errorMessage && debugMode) {
               AIMessage = {
                 "content": `Error: ${responseData.errorMessage}\n\nDetails: \n\n\`\`\`\n\n${JSON.stringify(responseData, null, 2)}\n\n\`\`\``,
                 "isUser": false
               };
+            } else if (responseData.errorMessage) {
+              AIMessage = {"content": defaultErrorMessage, "isUser": false};
             } else {
               AIMessage = {"content": responseData.response, "isUser": false};
             }
             setMessages(prevMessages => [...prevMessages, AIMessage]);
-
-            // Scroll to the bottom of the message container again after adding the response
-            if (messageContainerRef.current) {
-              messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
-            }
           })
           .catch(error => {
-            let AIMessage: Message = {
-              "content": "Error while preparing your answer. Check your connectivity to the backend",
-              "isUser": false
-            }
-            setMessages(prevMessages => [...prevMessages, AIMessage]);
-
-            // Scroll to the bottom of the message container again after adding the response
-            if (messageContainerRef.current) {
-              messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
-            }
+            setMessages(prevMessages => [...prevMessages, {"content": defaultErrorMessage, "isUser": false}]);
           });
       };
 
@@ -135,7 +126,11 @@ const ChatApp: React.FC = () => {
                 <PaperAirplaneIcon className="h-5 w-5 text-white ml-2" />
             </button>
             </div>
-            <div className="flex justify-center mt-2">
+            <div className="flex justify-between mt-2 items-center w-full">
+              
+              <DebugToggleSwitch
+                onToggle={(value) => setDebugMode(value)}
+              />
               <ClearButton
                 onClick={() => {
                   // Handle clearing the conversation
