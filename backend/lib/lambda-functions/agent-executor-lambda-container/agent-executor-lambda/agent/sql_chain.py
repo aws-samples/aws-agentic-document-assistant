@@ -1,11 +1,12 @@
 from typing import Optional, Union
 
+from langchain.chains.sql_database.query import (SQLInput, SQLInputWithTables,
+                                                 _strip)
 from langchain.schema.language_model import BaseLanguageModel
 from langchain.schema.output_parser import NoOpOutputParser
 from langchain.schema.prompt_template import BasePromptTemplate
 from langchain.schema.runnable import RunnableMap, RunnableSequence
 from langchain.sql_database import SQLDatabase
-from langchain.chains.sql_database.query import SQLInput, SQLInputWithTables, _strip
 
 
 def create_sql_query_generation_chain(

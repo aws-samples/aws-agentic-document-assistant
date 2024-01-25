@@ -1,7 +1,8 @@
 import boto3
 from langchain.agents import Tool
 from langchain.llms.bedrock import Bedrock
-from langchain.tools import DuckDuckGoSearchRun
+# from langchain.tools import DuckDuckGoSearchRun
+from langchain_community.tools import DuckDuckGoSearchRun
 
 from .calculator import CustomCalculatorTool
 from .config import AgenticAssistantConfig
@@ -44,7 +45,7 @@ LLM_AGENT_TOOLS = [
     ),
     Tool(
         name="Search",
-        func=search.run,
+        func=search.invoke,
         description=(
             "Use when you need to answer questions about current events, news or people."
             " You should ask targeted questions."

@@ -3,9 +3,9 @@ import os
 from dataclasses import dataclass
 
 import boto3
-from langchain.vectorstores import PGVector
-from langchain.sql_database import SQLDatabase
 import sqlalchemy
+from langchain.sql_database import SQLDatabase
+from langchain_community.vectorstores import PGVector
 
 ssm = boto3.client("ssm")
 secretsmanager_client = boto3.client("secretsmanager")

@@ -5,3 +5,4 @@ langchain
 duckduckgo-search
 psycopg2-binary
 pgvector
+langchain-community

@@ -1,6 +1,6 @@
 from langchain.chains import RetrievalQA
-from langchain.embeddings import BedrockEmbeddings
-from langchain.vectorstores import PGVector
+from langchain_community.embeddings import BedrockEmbeddings
+from langchain_community.vectorstores import PGVector
 
 
 def get_rag_chain(config, llm, bedrock_runtime):
