@@ -2,17 +2,17 @@ import logging
 import traceback
 
 import boto3
-from langchain.agents import AgentExecutor, ZeroShotAgent
-from langchain.chains import ConversationChain, LLMChain
+from agent.agent_of_agents import CLAUDE_AGENT_OF_AGENTS_PROMPT
+from agent.config import AgenticAssistantConfig
+from agent.prompts import CLAUDE_AGENT_PROMPT, CLAUDE_PROMPT
+from agent.specialized_agents import SPECIALIZED_AGENTS
+from agent.tools import LLM_AGENT_TOOLS
+from langchain.agents import AgentExecutor, create_react_agent
+from langchain.chains import ConversationChain
 from langchain.llms.bedrock import Bedrock
 from langchain.memory import ConversationBufferMemory
-from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
 
-from agent.config import AgenticAssistantConfig
-from agent.prompts import CALUDE_AGENT_PROMPT, CLAUDE_PROMPT
-from agent.agent_of_agents import CALUDE_AGENT_OF_AGENTS_PROMPT
-from agent.tools import LLM_AGENT_TOOLS
-from agent.specialized_agents import SPECIALIZED_AGENTS
+from langchain_community.chat_message_histories import DynamoDBChatMessageHistory
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -61,8 +61,7 @@ def get_agent_of_agents_chatbot_conversation_chain(
 ):
     """Define an LLM assistant implementing an agent of agents design pattern."""
     message_history = DynamoDBChatMessageHistory(
-        table_name=config.chat_message_history_table_name,
-        session_id=session_id
+        table_name=config.chat_message_history_table_name, session_id=session_id
     )
 
     if clean_history:
@@ -78,12 +77,10 @@ def get_agent_of_agents_chatbot_conversation_chain(
         return_messages=False,
     )
 
-    llm_chain = LLMChain(llm=claude_llm, prompt=CALUDE_AGENT_OF_AGENTS_PROMPT)
-
-    agent = ZeroShotAgent(
-        llm_chain=llm_chain,
+    agent = create_react_agent(
+        llm=claude_llm,
         tools=SPECIALIZED_AGENTS,
-        verbose=verbose,
+        prompt=CLAUDE_AGENT_OF_AGENTS_PROMPT,
     )
 
     agent_of_agents_chain = AgentExecutor.from_agent_and_tools(
@@ -115,12 +112,10 @@ def get_agentic_chatbot_conversation_chain(
         return_messages=False,
     )
 
-    llm_chain = LLMChain(llm=claude_llm, prompt=CALUDE_AGENT_PROMPT)
-
-    agent = ZeroShotAgent(
-        llm_chain=llm_chain,
+    agent = create_react_agent(
+        llm=claude_llm,
         tools=LLM_AGENT_TOOLS,
-        verbose=verbose,
+        prompt=CLAUDE_AGENT_PROMPT,
     )
 
     agent_chain = AgentExecutor.from_agent_and_tools(
@@ -148,29 +143,26 @@ def lambda_handler(event, context):
     elif chatbot_type == "agentic":
         conversation_chain = get_agentic_chatbot_conversation_chain(
             user_input, session_id, clean_history
-        ).run
+        ).invoke
     elif chatbot_type == "agent-of-agents":
         conversation_chain = get_agent_of_agents_chatbot_conversation_chain(
             user_input, session_id, clean_history
-        )
+        ).invoke
     else:
         return {
             "statusCode": 200,
             "response": (
                 f"The chatbot_type {chatbot_type} is not supported."
                 f" Please use one of the following types: {chatbot_types}"
-            )
+            ),
         }
 
     try:
-        response = conversation_chain(input=user_input)
+        response = conversation_chain({"input": user_input})
     except Exception:
         response = (
             "Unable to respond due to an internal issue." " Please try again later"
         )
         print(traceback.format_exc())
 
-    return {
-        "statusCode": 200,
-        "response": response
-    }
+    return {"statusCode": 200, "response": response}
