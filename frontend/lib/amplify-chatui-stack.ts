@@ -60,5 +60,12 @@ export class AmplifyChatuiStack extends cdk.Stack {
 
     amplifyChatUI.addBranch('main', {stage: "PRODUCTION"});
 
+    // -----------------------------------------------------------------------
+    // stack outputs
+
+    new cdk.CfnOutput(this, "AmplifyAppURL", {
+      value: amplifyChatUI.defaultDomain,
+    });
+
   }
 }
