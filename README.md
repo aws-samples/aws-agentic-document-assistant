@@ -58,12 +58,15 @@ To install the solution in your AWS account:
     4. Run `npx cdk deploy` to deploy the stack.
     5. Take note of the SageMaker IAM Policy ARN found in the CDK stack output.
 3. Deploy the Next.js frontend on AWS Amplify:
-    1. Go inside the `fontend` folder.
+    1. Go inside the `frontend` folder.
     2. Run `npm install` to install the dependencies.
     3. Run `npx cdk deploy` to deploy a stack that builds an Amplify CI/CD
     4. Once the CI/CD is ready go to the Amplify console and trigger a build.
-    5. Once the app is built, click the hosting link to view. You can now create a new account and interact with agentic assistant.
-4. To update the underlying data, run the SageMaker Pipeline notebooks under the `data-pipelines` folder. This processes the input pdf documents, prepares the SQL table, and creates the semantic search index used by the LLM assistant.
+    5. Once the app is built, click the hosting link to view the app. You can now create a new account and login to view the assistant.
+4. To load the underlying data, run the SageMaker Pipeline notebooks under the `data-pipelines` folder. This will load two files: (1) a pre-created csv file to load into the SQL tables, and (2) a json file containing preprocessed Amazon financial documents which will be used to create the semantic search index used by the LLM assistant.
+
+After running the above steps successfully, you can start interacting with the assistant and ask questions.
+If you want to update the underlying documents and extract new entities, explore the notebooks 1 to 5 under the `experiments` folder.
 
 ### Clean up
 
